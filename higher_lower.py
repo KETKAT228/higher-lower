@@ -37,18 +37,46 @@ for _ in range(15):
         
     if skip_loading: 
         break
+
 def player():
     score = 0
-    random_int_old = random.randint(1, 10)
-
+    complexity = {
+        1: 10,
+        2: 50,
+        3: 100,
+        4: 250
+    }
     while True:
-        random_int_nov = random.randint(1, 10)
-        
+        print("""
+1.легко       (1, 10)
+2.средний     (1, 50)
+3.сложно      (1, 100)
+4.невозможно  (1, 250)
+""")
+        try:
+            complexity_input = int(input("Выберите сложность (1-4): ///  "))
+            if complexity_input in complexity:
+                print("")
+                complexity_True = complexity[complexity_input]
+                break
+            else:
+                print("Число вне диапазона")
+        except ValueError:
+            print("Вводите цифрами")
+            
+    random_int_old = random.randint(1, complexity_True)
+    
+    while True:
+        random_int_nov = random.randint(1, complexity_True)
         print("\n" + "="*30)
         print(f"score: {score} | Текущее число: {random_int_old}")
 
-        player_input = input("Какое число будет следующим? (выше, ниже, равняется) \n/// ").lower().strip()
+        player_input = input("Какое число будет следующим? (выше, ниже, равняется) или 'выход'\n/// ").lower().strip()
         
+        if player_input == "выход":
+            print(f"Игра окончена! Ваш финальный счет: {score}")
+            break
+            
         print(f"Следующее число было: {random_int_nov}")
         
         if player_input == "равняется":
@@ -76,8 +104,9 @@ def player():
                 print("Вы не угадали... -1 очко")
                 
         else:
-            print("Неизвестная команда! (выше, ниже или равняется)")
+            print("Неизвестная команда! (выше, ниже, равняется или выход)")
             continue
+            
         random_int_old = random_int_nov
         time.sleep(1.5)
 
